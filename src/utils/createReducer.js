@@ -26,8 +26,10 @@ export default function createReducer(initialState, handlers, enforceImmutable =
     }
 
     state = handler(state, action);
-
-    if (enforceImmutable && !Immutable.Iterable.isIterable(state)) {
+    
+    if(typeof enforceImmutable === 'function'){
+      state = enforceImmutable(state, action);
+    }else if (enforceImmutable && !Immutable.Iterable.isIterable(state)) {
       throw new TypeError('Reducers must return Immutable objects.');
     }
 
